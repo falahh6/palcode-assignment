@@ -35,7 +35,7 @@ export default function Playlists() {
 
   const [saveLoading, setSaveLoading] = useState(false);
 
-  const { toast, dismiss } = useToast();
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -70,10 +70,7 @@ export default function Playlists() {
     });
   }, []);
 
-  const SaveLayoutHandler = async (
-    e: React.MouseEvent<HTMLButtonElement>,
-    id: string
-  ) => {
+  const SaveLayoutHandler = async () => {
     console.log("Save layout", playlistLayout);
 
     setSaveLoading(false);
@@ -81,14 +78,14 @@ export default function Playlists() {
 
   useEffect(() => {
     if (playlistLayout.length > 0) {
-      const { id } = toast({
+      toast({
         className: "rounded-2xl",
         title: "Save your layout changes?",
         duration: Infinity,
         action: (
           <ToastAction
             className="rounded-xl"
-            onClick={(e) => SaveLayoutHandler(e, id)}
+            onClick={() => SaveLayoutHandler()}
             altText="Save layout"
             disabled={saveLoading}
           >
