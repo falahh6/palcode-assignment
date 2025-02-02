@@ -48,7 +48,7 @@ export function PlaylistCard({
 
   return (
     <div
-      className="relative hover:shadow-lg cursor-pointer"
+      className="relative hover:shadow-xl cursor-pointer"
       onClick={() =>
         handlePlaylistSelect({ id, title, thumbnail, videos, description })
       }
@@ -72,7 +72,7 @@ export function PlaylistCard({
           alt={title ?? ""}
           className="w-full h-30 object-cover"
         />
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/80 to-transparent">
           <h3 className="text-white font-semibold text-lg">{title}</h3>
           <p className="text-white/80 text-sm">{videos.length} videos</p>
         </div>
