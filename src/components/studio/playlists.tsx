@@ -5,10 +5,11 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "../ui/toast";
-import { Loader } from "lucide-react";
+import { Loader, X } from "lucide-react";
 import { PlaylistCard } from "./playlist-card";
+import { Button } from "../ui/button";
 
 interface Playlist {
   id: string | null | undefined;
@@ -31,6 +32,10 @@ export default function Playlists() {
   const [playlistLayout, setPlaylistLayout] = useState<
     (string | null | undefined)[]
   >([]);
+
+  const [saveLoading, setSaveLoading] = useState(false);
+
+  const { toast, dismiss } = useToast();
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -65,18 +70,33 @@ export default function Playlists() {
     });
   }, []);
 
+  const SaveLayoutHandler = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: string
+  ) => {
+    console.log("Save layout", playlistLayout);
+
+    setSaveLoading(false);
+  };
+
   useEffect(() => {
     if (playlistLayout.length > 0) {
-      toast({
+      const { id } = toast({
+        className: "rounded-2xl",
         title: "Save your layout changes?",
+        duration: Infinity,
         action: (
           <ToastAction
-            onClick={() => {
-              console.log("Save layout", playlistLayout);
-            }}
+            className="rounded-xl"
+            onClick={(e) => SaveLayoutHandler(e, id)}
             altText="Save layout"
+            disabled={saveLoading}
           >
-            Save layout
+            {saveLoading ? (
+              <Loader className="animate-spin h-4 w-4" />
+            ) : (
+              "Save layout"
+            )}
           </ToastAction>
         ),
       });
@@ -122,7 +142,20 @@ export default function Playlists() {
         </div>
         {selectedPlaylist && (
           <div className="bg-[#27272F] min-w-[35%] max-w-[25%] p-4 rounded-2xl">
-            <h3 className="text-lg font-semibold">{selectedPlaylist.title}</h3>
+            <div>
+              <h3 className="text-lg font-semibold flex flex-row items-center justify-between">
+                {selectedPlaylist.title}
+                <Button
+                  onClick={() => setSelectedPlaylist(undefined)}
+                  size={"sm"}
+                  variant={"custom"}
+                  className="p-1 rounded-full h-fit"
+                >
+                  {" "}
+                  <X className="h-4 w-4" />
+                </Button>
+              </h3>
+            </div>
             <div className="my-4 h-full p-2 max-h-[65vh] overflow-y-auto scrollbar-hide flex flex-col gap-2">
               {selectedPlaylist.videos
                 .filter(
@@ -147,7 +180,7 @@ export default function Playlists() {
                       <span className="bg-white/10 text-gray-200 p-0.5 px-1 font-semibold rounded text-xs w-fit">
                         {video.duration}
                       </span>
-                      <p>Products Attached : 5</p>
+                      {/* <p>Products Attached : 5</p> */}
                     </div>
                   </div>
                 ))}

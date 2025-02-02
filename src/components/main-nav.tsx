@@ -31,7 +31,7 @@ export function MainNav({ className, ...props }: MainNavProps) {
     { name: "Shoppable Video", icon: PlaySquare },
     { name: "Story", icon: BookOpen },
     { name: "Live Commerce", icon: ShoppingCart },
-    { name: "Playlist Manager", icon: List, active: true },
+    { name: "Playlist Manager", icon: List, active: true }, //mocked active
     { name: "One Click Post", icon: MessageSquare },
     { name: "Calendar", icon: Calendar },
     { name: "Hire Influencer", icon: Users },
@@ -73,9 +73,10 @@ export function MainNav({ className, ...props }: MainNavProps) {
               key={name}
               variant="ghost"
               className={cn(
-                "rounded-xl w-full text-left flex flex-row",
+                "rounded-xl w-full text-left flex flex-row hover:bg-gray-600 hover:text-white",
                 expanded && "justify-start",
-                active && "bg-accent text-accent-foreground"
+                active &&
+                  "bg-gray-700 text-white hover:bg-gray-600 hover:text-white border border-gray-500"
               )}
             >
               <Icon />
